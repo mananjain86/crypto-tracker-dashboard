@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Tracker</title>
+    <link rel="stylesheet" href="coinpage.css">
+    <link rel="icon" href="coins-solid.svg">
+    <script src="https://kit.fontawesome.com/ed1a411920.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <header>
+        <div id="heading">
+            <a href="index.html"><h1><i class="fa-solid fa-coins" style="color: hsl(219, 88%, 57%);"></i> CRYPTO TRACKER</h1></a>
+            
+        </div>
+        <nav class="navbar">
+            
+            <a href="index.html">Home</a>
+            <a href="">Watchlist</a>
+            <label for="toggleBtn">
+                <input type="checkbox" name="toggleBtn" id="toggleBtn">
+                <span class="toggler">
+                    <span class="night"><i class="fa-solid fa-moon fa-flip-horizontal"></i></span>
+                    <span class="day"><i class="fa-solid fa-sun"></i></span>
+                    
+                    <span class="togglerSlider"></span>
+                </span>
+            </label>
+            <!-- <button class="login">Login</button> -->
+            
+        </nav>
+        
+    </header>
+    <br><br><br> <br>
+    <div class="coin-overview">
+        
+        
+        <div class="coin-data" id="coin-data">
+            <!-- content added dynamically -->
+        </div>
+        <div class="graph">
+            <canvas id="cryptoChart" width="900" height="550"></canvas>
+            <button class="chartDuration selected" id="chart_24h" onclick="changeTimeframe(1)">24h</button>
+            <button class="chartDuration" id="chart_7d" onclick="changeTimeframe(7)">7d</button>
+            <button class="chartDuration" id="chart_30d" onclick="changeTimeframe(30)">30d</button>
+            <button class="chartDuration" id="chart_1y" onclick="changeTimeframe(365)">1y</button>
+        </div>
+    </div>
+    <script src="coinpage.js" defer></script>
+</body>
+</html>

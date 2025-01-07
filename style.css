@@ -1,0 +1,466 @@
+@import url('https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&family=Sarala:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&family=Gantari:ital,wght@0,100..900;1,100..900&family=Sarala:wght@400;700&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Encode+Sans:wght@100..900&family=Gabarito:wght@400..900&family=Gantari:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Sarala:wght@400;700&display=swap');
+
+
+
+/* Light theme (default) */
+:root {
+    --bg-color: #ffffff;
+    --text-color: #000000;
+    --table-hover: hsl(0, 5%, 88%);
+    --search-input: #e6e6e6;
+    --search-button-hover: hsl(0, 1%, 21%);
+    --search-bg: black;
+    --search-color: hsl(219, 88%, 77%);
+    --header-color: rgb(233, 233, 233);
+    --login-active: rgb(255, 255, 255);
+    --login-bg: var(--header-color);
+    --google: rgb(225, 225, 225);
+}
+
+.dark-theme{
+    --bg-color: rgb(25, 25, 28);
+    --text-color: white;
+    --table-hover: rgb(44, 44, 44);
+    --search-input: rgb(54, 54, 54);
+    --search-button-hover: hsl(0, 0%, 85%);
+    --search-bg: white;
+    --search-color: hsl(219, 95%, 68%);
+    --header-color: rgb(24, 24, 24);
+    --login-active: black;
+    --login-bg: rgb(44, 44, 44);
+    --google: rgb(43, 43, 43);
+
+}
+
+body{
+    font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: var(--bg-color);
+    /* color: var(--text-color); */
+    
+}
+#heading{
+    display: inline-block;
+    font-family: Gabarito;
+    font-weight: bold;
+    font-size: 1.2em;
+    padding: none;
+    margin: none;
+    color: var(--text-color);
+}
+header{
+    font-family: Gabarito;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    /* padding: 5px 70px; */
+    padding-top: 0px;
+    padding-left: 70px;
+    padding-bottom: 0px;
+    margin: 0;
+    background-color: var(--header-color);
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 99;
+    box-shadow: grey -10px -2px 20px;
+}
+.navbar{
+    padding-right: 150px;
+    padding-bottom: 0;
+    
+}
+.navbar a{
+    font-weight: 500;
+    margin-right: 50px;
+    font-size: 1.1em;
+    color: var(--text-color);
+}
+
+a{
+    text-decoration: none;
+    color: inherit;
+}
+.navbar a:hover{
+    color: hsl(219, 88%, 57%);
+}
+
+.login, .logoutBtn{
+    background: transparent;
+    padding: 5px 10px;
+    border-radius: 6px;
+    outline: none;
+    font-size: 16px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-weight: 500;
+    cursor: pointer ;
+    background-color: hsl(219, 88%, 67%);
+    border: 1.5px solid var(--text-color);
+    color: var(--text-color);
+}
+.login:hover{
+    box-shadow: var(--text-color) 3px 3px 5px;
+    cursor: pointer;
+}
+.logoutBtn:hover{
+    box-shadow: var(--text-color) 3px 3px 5px;
+    cursor: pointer;
+}
+.container {
+    width: 90%;
+    margin: 0 auto;
+    /* padding: 20px; */
+}
+h2{
+    font-size: 2em;
+    font-family: Gabarito;
+    /* font-weight: bold; */
+    color: var(--text-color);
+    padding-top: 20px;
+    padding-bottom: none;
+}
+.container p{
+    font-family: Gabarito;
+    font-weight: bold;
+    color: var(--text-color);
+    font-size:1.5em;
+    padding-top: none;
+}
+table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+    border-bottom: 1px solid #000000;
+    overflow: hidden;
+    color: var(--text-color);
+}
+
+table th, table td {
+    
+    text-align: center;
+    border-bottom: 1.5px solid #bfbfbf;
+    /* border: none; */
+
+}
+
+table th {
+    background-color: #91b5f8;
+    color: rgb(0, 0, 0);
+    font-size: 0.8em;
+    padding: 12px;
+    padding-bottom: 20px;
+    padding-top: 20px;
+    
+}
+table {
+    border-radius: 5px;
+}
+
+table td {
+    padding: 18px;
+}
+table tr {
+    transition: background-color 0.3s ease; /* Smooth transition for color change */
+    font-size: 1.08em;
+
+    /* margin-bottom: 20px; */
+}
+
+table tbody tr:hover {
+    background-color: var(--table-hover);
+    cursor: pointer;
+}
+
+.search-box {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.search-box input {
+    padding: 10px;
+    font-size: 16px;
+    width: 300px;
+    height: 25px;
+    margin-right: 10px;
+    border: none;
+    background-color: var(--search-input);
+    border-radius: 4px;
+    font-family: Gabarito;
+    font-weight: normal;
+    color: var(--text-color);
+}
+
+.search-box button {
+    padding: none;
+    margin: none;
+    width: 40px;
+    height: 41px;
+    background-color: var(--text-color);
+    color: var(--search-color);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    /* font-size: 2em; */
+}
+
+
+.search-box button:hover {
+    background-color: var(--search-button-hover);
+    
+}
+
+/* Day-Night Toggle Slider */
+
+.toggler {
+    display: inline-block;
+    height: 30px;
+    width: 60px;
+    background-color: hsl(219, 88%, 67%);
+    border-radius: 25px;
+    cursor: pointer;
+    position: relative;
+    padding: none;
+    margin: none;
+    margin-right: 70px;
+    transition: background-color 0.5s;
+    top: 9.5px;
+    border: 2px solid var(--text-color);
+}
+.day, .night {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 25px;
+    height: 25px;
+    background-color: transparent;
+    border-radius: 50%;
+    font-size: 1.2em;
+    position: absolute;
+}
+.night {
+    color: hsl(0, 0%, 0%);
+    right: 2px;
+    top: 2px;
+    opacity: 1;
+    transition: opacity 0.5s;
+}
+.day {
+    color: #adc6f6;
+    left: 2px;
+    top: 2px;
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+.togglerSlider {
+    display: block;
+    height: 22.5px;
+    width: 22.5px;
+    background-color: hsl(0, 0%, 100%);
+    border-radius: 50%;
+    position: absolute;
+    left: 4px;
+    top: 4px;
+    z-index: 10;
+    transition: left 0.5s;
+}
+
+/* Checked Actions */
+#toggleBtn:checked + .toggler .togglerSlider {
+    left: 33px;
+}
+#toggleBtn:checked + .toggler {
+    background-color: rgb(0, 0, 0);
+}
+#toggleBtn:checked + .toggler .night {
+    opacity: 0;
+}
+#toggleBtn:checked + .toggler .day {
+    opacity: 1;
+}
+#toggleBtn {
+    appearance: none;
+}
+
+.authBtn {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+    color: var(--text-color);
+}
+.authBtn button {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-bottom: 2px solid transparent;
+    background: none;
+    cursor: pointer;
+    font-size: 1.1em;
+    color: var(--text-color);
+    font-family: Gabarito;
+}
+.authBtn button.active {
+    border-bottom: 2px solid hsl(219, 82%, 64%);
+    color: hsl(219, 88%, 57%);
+    transition: ease-in 0.3s;
+  }
+
+.form {
+    display: flex;
+    flex-direction: column;
+}
+.form h2{
+    text-align: center;
+}
+.form.hidden {
+    display: none;
+}
+#password{
+    margin-bottom: 20px;
+}
+#sign-confirmPass{
+    margin-bottom: 20px;
+}
+.form input {
+    /* margin: 10px 0; */
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: var(--search-input);
+    font-family: Gabarito;
+    /* width: 250px; */
+    height: 20px;
+    /* margin-right: 10px; */
+    border: none;
+    background-color: var(--search-input);
+    font-weight: normal;
+    color: var(--text-color);
+    /* outline: hsl(219, 88%, 63%); */
+}
+#remember-label{
+    color: var(--text-color);
+    font-family: Gabarito; 
+    font-size: 1.05em;
+
+}
+.remember-me-check{
+    /* padding-bottom: 20px; */
+    display: inline-block;
+}
+  
+.form button {
+    /* margin-top: 20px; */
+    padding: 10px;
+    background: hsl(219, 88%, 63%);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: Gabarito;
+    font-size: 17px;
+}
+#continueWithGoogle, #continueWithMetamask{
+    /* text-align: start; */
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    outline: 2px solid rgb(170, 170, 170);
+    margin-bottom: 10px;
+}
+#continueWithGoogle:hover ,#continueWithMetamask:hover{
+    background-color: var(--google);
+}
+  
+.form button:hover {
+    background: hsl(219, 90%, 55%);
+    transition: 500ms;
+}
+.popup{
+    position: absolute;
+    top: -150%;
+    left: 50%;
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.25);
+    width: 380px;
+    padding: 20px 30px;
+    background-color: var(--login-active);
+    border-radius: 10px;
+    box-shadow: 2px 2px 5px 5px grey;
+    transition: top 0ms ease-in 0.5s,
+                opacity 200ms ease-in 0ms,
+                transform 500ms ease-in 0ms;
+}
+.popup.active{
+    top: 52%;
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    transition: top 0ms ease-out 0.5ms,
+                opacity 200ms ease-out 0ms,
+                transform 500ms ease-out 0ms;
+    
+}
+.popup .close-btn{
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 15px;
+    height: 15px;
+    background: transparent;
+    text-align:center;
+    line-height: 15px;
+    border-radius: 15px;
+    cursor: pointer;
+    color: var(--text-color);
+}
+.complete{
+    transition: ease-out 0.7s;
+}
+.complete.active{
+    background-color: var(--login-bg);
+    transition: ease-in 0.7s;
+}
+
+.positive {
+    color: rgb(0, 150, 0);
+}
+
+.negative {
+    color: red;
+}
+
+.watchlist{
+    outline: none;
+    border: none;
+    background: transparent;
+    color: var(--text-color);
+    transition: color 0.3s, transform 0.3s;
+    /* color: rgb(255, 183, 0); */
+}
+
+.watchlist.revertStar {
+    color: rgb(255, 183, 0);
+    transform: scale(1.2); 
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination button {
+    margin: 0 5px;
+    padding: 10px;
+    cursor: pointer;
+    outline: none;
+    border: none;
+    background: none;
+    transition: ease 0.5s;
+    color: var(--text-color);
+    font-size: 1.1em;
+}
+.pagination button:hover{
+    font-size: 1.4em;
+    
+}

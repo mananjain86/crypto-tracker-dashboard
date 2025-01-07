@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Tracker</title>
+    <script src="signup.js" defer type="module"></script>
+    <script src="login.js" defer type="module"></script>
+    <!-- <script src="watchlist.js" type="module"></script> -->
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="coins-solid.svg">
+    <script src="https://kit.fontawesome.com/ed1a411920.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="complete" id="complete">
+    <header>
+        <div id="heading">
+            <a href="index.html"><h1><i class="fa-solid fa-coins" style="color: hsl(219, 88%, 57%);"></i> CRYPTO TRACKER</h1></a>
+            
+        </div>
+        <nav class="navbar">
+            
+            <a href="index.html">Home</a>
+            <a href="#">Watchlist</a>
+            <label for="toggleBtn">
+                <input type="checkbox" name="toggleBtn" id="toggleBtn">
+                <span class="toggler">
+                    <span class="night"><i class="fa-solid fa-moon fa-flip-horizontal"></i></span>
+                    <span class="day"><i class="fa-solid fa-sun"></i></span>
+                    
+                    <span class="togglerSlider"></span>
+                </span>
+            </label>
+            <button class="login" id="login">Login</button>
+            
+        </nav>
+        
+    </header>
+    <br><br><br><br>
+
+
+    <main>
+        <!-- <div class="trending">
+            <center><h2>Trending Coins</h2></center>
+        </div> -->
+        <div class="container" id="container">
+            <center><h2>Cryptocurrency Prices by Market Cap</h2></center>
+
+
+
+            <div class="search-box">
+                <input type="text" id="search" placeholder="Search cryptocurrencies...">
+                <!-- <button id="search-btn"><i class="fa-solid fa-magnifying-glass fa-lg" ></i></button> -->
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>24h Change</th>
+                        <th>Market Cap</th>
+                        <th>Volume</th>
+                    </tr>
+                </thead>
+                <tbody id="crypto-list">
+                    <!-- Data added dynamically -->
+                </tbody>
+            </table>
+
+            <div class="popup" id="popup">
+                <div class="close-btn" id="close-btn"><i class="fa-solid fa-xmark fa-lg"></i></div>
+                <div class="authBtn">
+                   <button id="loginBtn" class="active">Login</button>
+                    <button id="signupBtn">Signup</button>
+                </div>
+            
+                <form id="loginForm" class="form">
+                    <h2>Login</h2>
+                    <input type="email" id="email" placeholder="Email">
+                    <input type="password" id="password" placeholder="Password">
+                    <br><button type="submit" id="loginAuth">Login</button>
+                    <center><h3 style="margin: none; padding: none; font-family: Gabarito; color: var(--text-color);">OR</h3></center>
+                    <button type="submit" id="continueWithGoogle"><img src="https://lh3.googleusercontent.com/COxitqgJr1sJnIDe8-jiKhxDx1FrYbtRHKJ9z_hELisAlapwE9LUPh6fcXIfb5vwpbMl4xl9H9TRFPc5NOO8Sb3VSgIBrfRYvW6cUA" style="height: 22px; float: left;"> Continue with Google</button>
+                    <button type="submit" id="continueWithMetamask"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/MetaMask_Fox.svg/2048px-MetaMask_Fox.svg.png" style="height: 22px; float: left;"> Continue with Metamask</button>
+                    </form>
+                <form id="signupForm" class="form hidden">
+                    <h2>Signup</h2>
+                    <input type="text" id="sign-name" placeholder="Name">
+                    <input type="email" id="sign-email" placeholder="Email">
+                    <input type="password" id="sign-pass" placeholder="Password">
+                    <input type="password" id="sign-confirmPass" placeholder="Confirm Password"> <br>
+                    <button type="submit" id="signupAuth">Create Account</button>
+                    <center><h3 style="margin: none; padding: none; font-family: Gabarito; color: var(--text-color);">OR</h3></center>
+                    <button type="submit" id="continueWithGoogle"><img src="https://lh3.googleusercontent.com/COxitqgJr1sJnIDe8-jiKhxDx1FrYbtRHKJ9z_hELisAlapwE9LUPh6fcXIfb5vwpbMl4xl9H9TRFPc5NOO8Sb3VSgIBrfRYvW6cUA" style="height: 22px; float: left;"> Continue with Google</button>
+                    <button type="submit" id="continueWithMetamask"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/MetaMask_Fox.svg/2048px-MetaMask_Fox.svg.png" style="height: 22px; float: left;"> Continue with Metamask</button>
+                    
+                </form>
+            </div>
+            <div class="pagination">
+                <button id="prev-page"><i class="fa-solid fa-chevron-left"></i></button>
+                <button id="next-page"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+
+        </div>
+        
+    </main>
+    
+</div>
+    <script src="index.js" type="module"></script>
+</body>
+</html>

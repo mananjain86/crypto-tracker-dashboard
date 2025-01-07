@@ -1,0 +1,276 @@
+@import url('https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&family=Sarala:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&family=Gantari:ital,wght@0,100..900;1,100..900&family=Sarala:wght@400;700&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Encode+Sans:wght@100..900&family=Gabarito:wght@400..900&family=Gantari:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Sarala:wght@400;700&display=swap');
+
+
+:root {
+    --bg-color: #ffffff;
+    --text-color: #000000;
+    --table-hover: hsl(0, 0%, 92%);
+    --search-input: #e6e6e6;
+    --search-button-hover: hsl(0, 0%, 13%);
+    --search-bg: black;
+    --search-color: hsl(219, 88%, 77%);
+    --header-color: rgb(233, 233, 233);
+    --data-color: rgb(97, 97, 97);
+    --table-border: rgb(223, 223, 223);
+}
+
+.dark-theme{
+    --bg-color: rgb(25, 25, 28);
+    --text-color: white;
+    --table-hover: rgb(31, 31, 31);
+    --search-input: rgb(54, 54, 54);
+    --search-button-hover: hsl(0, 0%, 92%);
+    --search-bg: white;
+    --search-color: hsl(219, 95%, 68%);
+    --header-color: rgb(24, 24, 24);
+    --data-color: rgb(199, 199, 199);
+    --table-border: rgb(56, 56, 56);
+
+}
+
+body{
+    font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: var(--bg-color);
+    /* color: var(--text-color); */
+    padding: 20px;
+    
+}
+#heading{
+    display: inline-block;
+    font-family: Gabarito;
+    font-weight: bold;
+    font-size: 1.2em;
+    padding: none;
+    margin: none;
+    color: var(--text-color);
+}
+header{
+    font-family: Gabarito;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    /* padding: 5px 70px; */
+    padding-top: 0px;
+    padding-left: 70px;
+    padding-bottom: 0px;
+    margin: 0;
+    background-color: var(--header-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 99;
+    box-shadow: grey -10px -2px 20px;
+}
+.navbar{
+    padding-right: 150px;
+    padding-bottom: 0;
+    
+}
+.navbar a{
+    font-weight: 500;
+    margin-right: 50px;
+    font-size: 1.1em;
+    color: var(--text-color);
+}
+.login{
+    background: transparent;
+    padding: 5px 10px;
+    border-radius: 6px;
+    outline: none;
+    font-size: 16px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-weight: 500;
+    cursor: pointer ;
+    background-color: hsl(219, 88%, 67%);
+    border: 1.5px solid var(--text-color);
+    color: var(--text-color);
+}
+.login:hover{
+    box-shadow: var(--text-color) 3px 3px 5px;
+    cursor: pointer;
+}
+/* Day-Night Toggle Slider */
+
+.toggler {
+    display: inline-block;
+    height: 30px;
+    width: 60px;
+    background-color: hsl(219, 88%, 67%);
+    border-radius: 25px;
+    cursor: pointer;
+    position: relative;
+    padding: none;
+    margin: none;
+    margin-right: 70px;
+    transition: background-color 0.5s;
+    top: 9.5px;
+    border: 2px solid var(--text-color);
+}
+.day, .night {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 25px;
+    height: 25px;
+    background-color: transparent;
+    /* border: 1px solid red; */
+    border-radius: 50%;
+    font-size: 1.2em;
+    position: absolute;
+}
+.night {
+    color: hsl(0, 0%, 0%);
+    right: 2px;
+    top: 2px;
+    opacity: 1;
+    transition: opacity 0.5s;
+}
+.day {
+    color: #adc6f6;
+    left: 2px;
+    top: 2px;
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+.togglerSlider {
+    display: block;
+    height: 22.5px;
+    width: 22.5px;
+    background-color: hsl(0, 0%, 100%);
+    border-radius: 50%;
+    position: absolute;
+    left: 4px;
+    top: 4px;
+    z-index: 10;
+    transition: left 0.5s;
+}
+
+/* Checked Actions */
+#toggleBtn:checked + .toggler .togglerSlider {
+    left: 33px;
+}
+#toggleBtn:checked + .toggler {
+    background-color: rgb(0, 0, 0);
+}
+#toggleBtn:checked + .toggler .night {
+    opacity: 0;
+}
+#toggleBtn:checked + .toggler .day {
+    opacity: 1;
+}
+#toggleBtn {
+    appearance: none;
+}
+a{
+    text-decoration: none;
+    color: inherit;
+}
+.navbar a:hover{
+    color: hsl(219, 88%, 57%);
+}
+
+.coin-overview{
+    display: block;
+    width: 32%;
+    border-right: 5px solid hsl(219, 88%, 57%);
+    /* border-radius: 4px; */
+    height: 100%;
+    color: var(--text-color);
+    /* text-align: center; */
+    padding-right: 20px;
+}
+/* .coin-overview img{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+} */
+#coin-info{
+    padding-right: 30px;
+    padding-top: 20px;
+    font-size: 1.1em;
+}
+.coin-overview .coin-data{
+    padding-bottom: 5px;
+    font-size: 1.1em;
+}
+.graph{
+    display: inline-block;
+    position: absolute;
+    right: 40px;
+    top: 120px;
+}
+
+#priceOfCoin{
+    font-size: 2.3em;
+    display: inline;
+}
+.positive {
+    color: rgb(0, 150, 0);
+    /* background-color: rgba(144, 247, 144, 0.304); */
+
+}
+.negative{
+    color: red;
+    /* background-color: rgba(255, 173, 173, 0.298); */
+
+}
+.positive, .negative{
+    display: inline-block;
+    font-weight: bold;
+    font-size: 1.1em;
+    transform: translateX(10px) translateY(-5px);
+    /* border: 1px solid; */
+    padding: 4.5px 3px ;
+    border-radius: 6px;
+}
+small{
+    color: var(--data-color);
+}
+#coinDetails p{
+    border-bottom: 1.5px solid var(--table-border);
+    padding-bottom: 10px;
+}
+#coinDetails{
+    padding-bottom: 10px;
+}
+
+.priceData .positive{
+    font-size: 1em;
+}
+.priceData .negative{
+    font-size: 1em;
+}
+.priceData p {
+    border-bottom: 1.5px solid var(--table-border);
+    padding-bottom: 10px;
+
+}
+
+.chartDuration{
+    font-family: Gabarito;
+    padding: 12px 70px;
+    margin-top: 50px;
+    margin-left: 50px;
+    background: none;
+    outline: none;
+    border: 3px solid var(--text-color);
+    border-radius: 5px;
+    color: var(--text-color);
+    font-weight: bold;
+    font-size: 1.2em;
+}
+.chartDuration:hover{
+    
+    background-color: var(--table-hover);
+    color: hsl(219, 88%, 57%);
+    border: 3px solid hsl(219, 88%, 57%);
+}
+.chartDuration.selected{
+    background-color: hsl(219, 88%, 57%);
+    color: var(--text-color);
+    border: 3px solid var(--text-color);
+}

@@ -199,8 +199,8 @@ a{
 }
 .graph{
     display: inline-block;
-    position: absolute;
-    right: 40px;
+    position: relative;
+    left: 40px;
     top: 120px;
 }
 

@@ -198,8 +198,8 @@ a{
 .graph{
     display: inline-block;
     position: relative;
-    left: 40px;
-    top: 120px;
+    top: -1100px;
+    left: 500px;
 }
 
 #priceOfCoin{

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Tracker</title>
+    <script src="signup.js" defer type="module"></script>
+    <script src="login.js" defer type="module"></script>
+    <script src="index.js" defer type="module"></script>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="coins-solid.svg">
+    <script src="https://kit.fontawesome.com/ed1a411920.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="complete" id="complete">
+    <header>
+        <div id="heading">
+            <a href="index.html"><h1><i class="fa-solid fa-coins" style="color: hsl(219, 88%, 57%);"></i> CRYPTO TRACKER</h1></a>
+            
+        </div>
+        <nav class="navbar">
+            
+            <a href="index.html">Home</a>
+            <a href="#">Watchlist</a>
+            <label for="toggleBtn">
+                <input type="checkbox" name="toggleBtn" id="toggleBtn">
+                <span class="toggler">
+                    <span class="night"><i class="fa-solid fa-moon fa-flip-horizontal"></i></span>
+                    <span class="day"><i class="fa-solid fa-sun"></i></span>
+                    
+                    <span class="togglerSlider"></span>
+                </span>
+            </label>
+            <button class="login" id="login"></button>
+            
+        </nav>
+        
+    </header>
+    <br><br><br><br>
+    <main>
+        <!-- <div class="trending">
+            <center><h2>Trending Coins</h2></center>
+        </div> -->
+        <div class="container" id="container">
+            <center><h2>Your Watchlist</h2></center>
+
+
+
+            <div class="search-box">
+                <input type="text" id="search" placeholder="Search cryptocurrencies...">
+                <!-- <button id="search-btn"><i class="fa-solid fa-magnifying-glass fa-lg" ></i></button> -->
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <!-- <th></th> -->
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>24h Change</th>
+                        <th>Market Cap</th>
+                        <th>Volume</th>
+                    </tr>
+                </thead>
+                <tbody id="crypto-list">
+                    <!-- Data added dynamically -->
+                </tbody>
+            </table>
+    
+
+    <script src="watchlist.js" type="module"></script>
+</body>
+</html>

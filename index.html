@@ -4,10 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crypto Tracker</title>
+    <!-- <script src="watchlist.js" type="module"></script> -->
     <script src="signup.js" defer type="module"></script>
     <script src="login.js" defer type="module"></script>
-    <!-- <script src="watchlist.js" type="module"></script> -->
-
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="coins-solid.svg">
     <script src="https://kit.fontawesome.com/ed1a411920.js" crossorigin="anonymous"></script>
@@ -22,7 +21,7 @@
         <nav class="navbar">
             
             <a href="index.html">Home</a>
-            <a href="#">Watchlist</a>
+            <a href="watchlist.html">Watchlist</a>
             <label for="toggleBtn">
                 <input type="checkbox" name="toggleBtn" id="toggleBtn">
                 <span class="toggler">
@@ -32,7 +31,7 @@
                     <span class="togglerSlider"></span>
                 </span>
             </label>
-            <button class="login" id="login">Login</button>
+            <button class="login" id="login"></button>
             
         </nav>
         
@@ -55,9 +54,10 @@
             </div>
 
             <table>
+                
                 <thead>
                     <tr>
-                        <th></th>
+                        <!-- <th></th> -->
                         <th>#</th>
                         <th>Name</th>
                         <th>Price</th>
@@ -66,6 +66,7 @@
                         <th>Volume</th>
                     </tr>
                 </thead>
+                
                 <tbody id="crypto-list">
                     <!-- Data added dynamically -->
                 </tbody>
@@ -111,5 +112,7 @@
     
 </div>
     <script src="index.js" type="module"></script>
+    
+
 </body>
 </html>

@@ -18,7 +18,7 @@
         <nav class="navbar">
             
             <a href="index.html">Home</a>
-            <a href="">Watchlist</a>
+            <a href="watchlist.html">Watchlist</a>
             <label for="toggleBtn">
                 <input type="checkbox" name="toggleBtn" id="toggleBtn">
                 <span class="toggler">
@@ -34,20 +34,24 @@
         
     </header>
     <br><br><br> <br>
+    
     <div class="coin-overview">
         
-        
+        <h3><i class="fa-regular fa-star" id="emptyStar"  style="float: right; display: block"></i>
+             <i class="fa-solid fa-star" id="filledStar"  style="float: right; display: none; color: rgb(255, 200, 0);"></i>
+        </h3>
         <div class="coin-data" id="coin-data">
+            
             <!-- content added dynamically -->
         </div>
         <div class="graph">
             <canvas id="cryptoChart" width="900" height="550"></canvas>
-            <button class="chartDuration selected" id="chart_24h" onclick="changeTimeframe(1)">24h</button>
-            <button class="chartDuration" id="chart_7d" onclick="changeTimeframe(7)">7d</button>
-            <button class="chartDuration" id="chart_30d" onclick="changeTimeframe(30)">30d</button>
-            <button class="chartDuration" id="chart_1y" onclick="changeTimeframe(365)">1y</button>
+            <button class="chartDuration selected" id="chart_24h">24h</button>
+            <button class="chartDuration" id="chart_7d">7d</button>
+            <button class="chartDuration" id="chart_30d">30d</button>
+            <button class="chartDuration" id="chart_1y">1y</button>
         </div>
     </div>
-    <script src="coinpage.js" defer></script>
+    <script type="module" src="coinpage.js" defer></script>
 </body>
 </html>

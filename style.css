@@ -464,3 +464,15 @@ table tbody tr:hover {
     font-size: 1.4em;
     
 }
+
+#emptyStar{
+    position: relative;
+    top: 25px;
+    left:10px;
+}
+
+#filledStar{
+    position: relative;
+    top: 25px;
+    left:10px;
+}

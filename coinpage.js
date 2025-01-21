@@ -1,3 +1,23 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+import { getDatabase, get, ref, set } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-database.js";
+import { getAuth, onAuthStateChanged} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAA136fBD1NQEaa_X6PSBp2-W-9PvX541s",
+  authDomain: "crypto-tracker-b26cf.firebaseapp.com",
+  databaseURL: "https://crypto-tracker-b26cf-default-rtdb.firebaseio.com",
+  projectId: "crypto-tracker-b26cf",
+  storageBucket: "crypto-tracker-b26cf.firebasestorage.app",
+  messagingSenderId: "602351349910",
+  appId: "1:602351349910:web:54b857cf388080f41252b7",
+  measurementId: "G-E43K8SFMRZ"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth();
+const database = getDatabase(app);
+
+
 const toggleBtn = document.getElementById("toggleBtn");
 const body = document.body;
 toggleBtn.addEventListener('click', () => {
@@ -22,7 +42,7 @@ fetch(detailsUrl)
     description = description.split('. ')[0] + '.' + description.split('. ')[1] + '.';
 
     coinData.innerHTML = `
-        <h3><img src="${data.image.large}" alt="${data.name} logo" width=25px> ${data.name} (${data.symbol.toUpperCase()}) <small><i class="fa-regular fa-star" id="emptyStar"  style="float: right; display: block"></i> <i class="fa-solid fa-star" id="filledStar"  style="float: right; display: none"></i></small></h3>
+        <h3><img src="${data.image.large}" alt="${data.name} logo" width=25px> ${data.name} (${data.symbol.toUpperCase()}) </h3>
         <h1 id="priceOfCoin">$${data.market_data.current_price.usd.toLocaleString()} </h1>
         <span class="${data.market_data.price_change_percentage_24h >= 0 ? 'positive' : 'negative'}"> ${data.market_data.price_change_percentage_24h >= 0 ? '<i class="fa-solid fa-caret-up"></i>' : '<i class="fa-solid fa-caret-down"></i>'} ${Math.abs(data.market_data.price_change_percentage_24h).toFixed(2)}%</span>
         <p style="padding-bottom:20px; padding-top:15px">${description}</p>
@@ -187,9 +207,81 @@ function createChart(timestamps, prices) {
 
 btnClick();
 
+const btn_24h = document.getElementById("chart_24h");
+const btn_7d = document.getElementById("chart_7d");
+const btn_30d = document.getElementById("chart_30d");
+const btn_1y = document.getElementById("chart_1y");
 
-function changeTimeframe(days) {
-    fetchChartData(days); 
-}
+// btn_24h.onclick = fetchChartData(1);
+// btn_7d.onclick = fetchChartData(7);
+// btn_30d.onclick = fetchChartData(30);
+// btn_1y.onclick = fetchChartData(365);
+btn_24h.addEventListener("click", () => fetchChartData(1));
+btn_7d.addEventListener("click", () => fetchChartData(7));
+btn_30d.addEventListener("click", () => fetchChartData(30));
+btn_1y.addEventListener("click", () => fetchChartData(365));
+
+// function changeTimeframe(days) {
+//     fetchChartData(days); 
+// }
 
 fetchChartData(1);
+
+//Watchlist
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        const userId = user.uid;
+
+async function handleWatchlist(userId, coinId, isAdding) {
+    const watchlistRef = ref(database, `Watchlist/${userId}`);
+    try {
+        // Update the user's favorites list
+        const watchlistSnapshot = await get(watchlistRef);
+        let watchlist = watchlistSnapshot.exists() ? watchlistSnapshot.val() : [];
+
+        if (isAdding && !watchlist.includes(coinId)) {
+            watchlist.push(coinId);
+            console.log("Coin added to watchlist");
+        } else if (!isAdding && watchlist.includes(coinId)) {
+            watchlist = watchlist.filter((id) => id !== coinId);
+            console.log("Coin removed from watchlist");
+        }
+
+        await set(watchlistRef, watchlist);
+
+        // Update the UI
+        document.getElementById("emptyStar").style.display = isAdding ? "none" : "block";
+        document.getElementById("filledStar").style.display = isAdding ? "block" : "none";
+        console.log(`${isAdding ? "Added to" : "Removed from"} watchlist successfully.`);
+    } catch (error) {
+        console.error("Error updating watchlist:", error);
+    }
+}
+
+// Event Listeners for Favorites
+document.getElementById("emptyStar").addEventListener("click", async () => {
+    if (!userId) return alert("Please log in to use watchlist.");
+    await handleWatchlist(userId, cryptoId, true);
+});
+
+document.getElementById("filledStar").addEventListener("click", async () => {
+    if (!userId) return alert("Please log in to use watchlist.");
+    await handleWatchlist(userId, cryptoId, false);
+});
+
+async function checkWatchlist(userId, coinId) {
+    const watchlistRef = ref(database, `Watchlist/${userId}`);
+    const watchlistSnapshot = await get(watchlistRef);
+    const watchlist = watchlistSnapshot.exists() ? watchlistSnapshot.val() : [];
+    if (watchlist.includes(coinId)) {
+        document.getElementById("emptyStar").style.display = "none";
+        document.getElementById("filledStar").style.display = "block";
+    } else {
+        document.getElementById("emptyStar").style.display = "block";
+        document.getElementById("filledStar").style.display = "none";
+    }
+}
+
+checkWatchlist(userId, cryptoId);
+    }
+});

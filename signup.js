@@ -9,7 +9,7 @@
 
   // Your web app's Firebase configuration
   // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
+  const firebaseConfig = {
     apiKey: "AIzaSyAA136fBD1NQEaa_X6PSBp2-W-9PvX541s",
     authDomain: "crypto-tracker-b26cf.firebaseapp.com",
     projectId: "crypto-tracker-b26cf",
@@ -17,7 +17,7 @@ const firebaseConfig = {
     messagingSenderId: "602351349910",
     appId: "1:602351349910:web:54b857cf388080f41252b7",
     measurementId: "G-E43K8SFMRZ"
-};
+  };
 
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
@@ -76,10 +76,10 @@ signupAuth.addEventListener("click", function(event){
     const user = userCredential.user;
     console.log(user);
     window.alert("Creating Account...");
-    savetoDatabase(name, email);
+    // savetoDatabase(name, email);
     popup.classList.remove("active");
     complete.classList.remove("active");
-    logout()
+    logout();
     })
     .catch((error) => {
       const errorCode = error.code;

@@ -1,15 +1,9 @@
 // Firebase Authentication
-  // Import the functions you need from the SDKs you need
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-analytics.js";
-  import { getAuth, signInWithEmailAndPassword, signInWithPopup, signOut} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+  import { getAuth, signInWithPopup} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
 
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
-
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
+  const firebaseConfig = {
     apiKey: "AIzaSyAA136fBD1NQEaa_X6PSBp2-W-9PvX541s",
     authDomain: "crypto-tracker-b26cf.firebaseapp.com",
     projectId: "crypto-tracker-b26cf",
@@ -17,8 +11,7 @@ const firebaseConfig = {
     messagingSenderId: "602351349910",
     appId: "1:602351349910:web:54b857cf388080f41252b7",
     measurementId: "G-E43K8SFMRZ"
-};
-
+  };
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
   const analytics = getAnalytics(app);
@@ -28,58 +21,27 @@ const firebaseConfig = {
   const nav_loginBtn = document.getElementById("login");
 
 
-
 // Login Button
-const loginAuth = document.getElementById("loginAuth");
-function logout(){
-  const logoutBtn = document.createElement("button");
-    logoutBtn.innerText = "Logout";
-    logoutBtn.classList.add("logoutBtn");
-    logoutBtn.onclick = function() {
-      alert("Logging Out!");
-      // Logout code 	  
+// function logout(){
+//   // const logoutBtn = document.createElement("button");
+//   //   logoutBtn.innerText = "Logout";
+//   //   logoutBtn.classList.add("logoutBtn");
+//   //   logoutBtn.onclick = function() {
+//   //     alert("Logging Out!");
+//   //     // Logout code 	  
         
-             signOut(auth).then(() => {
-                 console.log('Log-out successful.');
-                 logoutBtn.parentNode.replaceChild(nav_loginBtn, logoutBtn); 
-                 window.location.href="index.html";
-               }).catch((error) => {
-                 console.log('An error happened.',error);
-               });		  		  
+//              signOut(auth).then(() => {
+//                  console.log('Log-out successful.');
+//              //    logoutBtn.parentNode.replaceChild(nav_loginBtn, logoutBtn); 
+//                  window.location.href="index.html";
+//                }).catch((error) => {
+//                  console.log('An error happened.',error);
+//                });		  		  
         
-    };
-    nav_loginBtn.parentNode.replaceChild(logoutBtn, nav_loginBtn); 
-}
-loginAuth.addEventListener("click", function(event){
-    event.preventDefault();
+//     };
+//    // nav_loginBtn.parentNode.replaceChild(logoutBtn, nav_loginBtn); 
+// //}
 
-    //   Inputs
-    var email = document.getElementById("email").value;
-    var password = document.getElementById("password").value;
-
-
-    signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-    // Signed up 
-    const user = userCredential.user;
-    console.log(user);
-    window.alert("Logging In...");
-    popup.classList.remove("active");
-    complete.classList.remove("active");
-
-     logout();
-
-
-  
-  })
-  .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    console.log(errorMessage);
-    alert(errorMessage);
-    // ..
-  });
-})
 auth.languageCode='en';
 
  const googleLogin = document.getElementById("continueWithGoogle");
@@ -120,3 +82,42 @@ metamaskLogin.addEventListener("click",function(event) {
         alert("Please install MetaMask!");
       }
 })
+
+// onAuthStateChanged(auth, (user) => {
+//   if(user){
+//     nav_loginBtn.textContent = "Logout";  
+//     nav_loginBtn.addEventListener("click", ()=>{
+//       signOut(auth).then(() => {
+//         console.log('Log-out successful.');
+//         window.location.href="index.html";
+//       }).catch((error) => {
+//         console.log('An error happened.',error);
+//       });	
+//     });
+//    } else {
+//     const loginAuth = document.getElementById("loginAuth");
+//     nav_loginBtn.textContent = "Login";
+//     loginAuth.addEventListener("click", function(event){
+//       event.preventDefault();
+//       //   Inputs
+//       var email = document.getElementById("email").value;
+//       var password = document.getElementById("password").value;
+//       signInWithEmailAndPassword(auth, email, password)
+//       .then((userCredential) => {
+//       // Signed up 
+//       const user = userCredential.user;
+//       console.log(user);
+//       window.alert("Logging In...");
+//       popup.classList.remove("active");
+//       complete.classList.remove("active");
+//     })
+//     .catch((error) => {
+//       const errorCode = error.code;
+//       const errorMessage = error.message;
+//       console.log(errorMessage);
+//       alert(errorMessage);
+//       // ..
+//     });
+//   });
+//    }
+// });

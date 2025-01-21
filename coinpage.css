@@ -172,14 +172,19 @@ a{
 }
 
 .coin-overview{
-    display: block;
-    width: 32%;
-    border-right: 5px solid hsl(219, 88%, 57%);
+    display: flex;
+    flex-direction: row;
+
+    /* display: block; */
+    /* width: 32%; */
+    /* border-right: 5px solid hsl(219, 88%, 57%); */
     /* border-radius: 4px; */
-    height: 100%;
+    /* height: 100%; */
     color: var(--text-color);
+    margin-left: none;
+    padding-left: none;
     /* text-align: center; */
-    padding-right: 20px;
+    /* padding-right: 20px; */
 }
 /* .coin-overview img{
     display: block;
@@ -191,6 +196,12 @@ a{
     padding-top: 20px;
     font-size: 1.1em;
 }
+.coin-data{
+    display:inline-block;
+    flex: 1;
+    padding-right: 20px;
+    border-right: 5px solid hsl(219, 88%, 57%);
+}
 .coin-overview .coin-data{
     padding-bottom: 5px;
     font-size: 1.1em;
@@ -198,8 +209,10 @@ a{
 .graph{
     display: inline-block;
     position: relative;
-    top: -1100px;
-    left: 500px;
+    flex: 2.5;
+    padding-left: 20px;
+    /* bottom: 50px; */
+    /* left: 110%; */
 }
 
 #priceOfCoin{
@@ -271,4 +284,13 @@ small{
     background-color: hsl(219, 88%, 57%);
     color: var(--text-color);
     border: 3px solid var(--text-color);
+}
+
+#emptyStar,#filledStar{
+    /* font-size: 1.5em; */
+    /* color: hsl(219, 88%, 57%); */
+    /* margin-right: 50px; */
+    left: 400px;
+    position: relative;
+    top: 10px;
 }

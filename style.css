@@ -465,14 +465,14 @@ table tbody tr:hover {
     
 }
 
-#emptyStar{
-    position: relative;
-    top: 25px;
-    left:10px;
-}
+/* #emptyStar{
+    position: relative; */
+    /* top: 25px; */
+    /* left: 100px; */
+/* } */
 
-#filledStar{
-    position: relative;
-    top: 25px;
-    left:10px;
-}
+/* #filledStar{ */
+    /* position: relative; */
+    /* top: 25px; */
+    /* left: 100px; */
+/* } */

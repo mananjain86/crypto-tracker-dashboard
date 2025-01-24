@@ -476,3 +476,156 @@ table tbody tr:hover {
     /* top: 25px; */
     /* left: 100px; */
 /* } */
+
+/* FOOTER */
+
+.footer {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    padding: 20px 0;
+    font-family: Gabarito;
+    border-top: 1px solid var(--text-color);
+  }
+  
+  .footer-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    max-width: 1200px;
+    margin: auto;
+    padding: 0 20px;
+  }
+  
+
+   .footer-left{
+    flex: 1;
+   }
+   .footer-center{
+    flex: 2;
+    text-align: right;
+    margin-right: 80px;
+   }
+   .footer-right{
+    flex: 1;
+   }
+  
+  .footer-left h3 {
+    margin-bottom: 10px;
+    color: hsl(219, 88%, 57%);
+    font-size: 1.8em;
+  }
+  .footer-left p{
+    font-size: 1.1em;
+  }
+  .footer-links {
+    list-style-type: none;
+    padding-bottom: 0;
+  }
+  
+  .footer-links li {
+    margin: 13px 0;
+  }
+  
+  .footer-links a {
+    text-decoration: none;
+    color: var(--text-color);
+  }
+  
+  .footer-links a:hover {
+    color: hsl(219, 88%, 57%);
+  }
+  
+  .social-icons a {
+    margin-right: 10px;
+    text-decoration: none;
+    color: var(--text-color);
+    font-size: 1.8em;
+  }
+  
+  .social-icons a:hover {
+    color: hsl(219, 88%, 57%);
+  }
+  
+  .footer-bottom {
+    text-align: center;
+    padding-top: 10px;
+    /* border-top: 1px solid #2c2c2c; */
+    margin-top: 20px;
+    font-size: 14px;
+  }
+  .footer-right p{
+    font-weight: bold;
+    font-size: 1.2em;
+    margin: none;
+    padding: none;
+}
+
+
+
+
+  /* About Us Page */
+  .about-us {
+    /* font-family: 'Arial', sans-serif; */
+    font-family: Gabarito;
+    line-height: 1.6;
+    /* color: #333; */
+    padding: 20px;
+  }
+  
+  .hero {
+    text-align: center;
+    /* background: linear-gradient(135deg, #00b894, #2d3436); */
+    color: var(--text-color);
+    padding: 50px 20px;
+  }
+  
+  .hero h1 {
+    margin: 0;
+    font-size: 2.5em;
+  }
+  
+  .hero p {
+    font-size: 1.2em;
+  }
+  
+  .intro, .features, .mission-vision, .team, .cta {
+    margin: 20px 0;
+    color: var(--text-color);
+  }
+  .intro p{
+    font-size: 1.1em;
+  }
+  
+  .features ul {
+    list-style-type: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+  }
+  
+  .features li {
+    background: var(--search-input);
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+  }
+
+  
+  .btn {
+    display: inline-block;
+    padding: 15px 80px;
+    color: var(--bg-color);
+    background: hsl(219, 88%, 57%);
+    text-decoration: none;
+    border-radius: 5px;
+    margin: 5px;
+    font-size: 1.3em;
+    transition: ease 400ms;
+  }
+  .btn:hover{
+    padding: 25px 120px;
+    font-size: 1.4em;
+    transition: ease 400ms;
+    opacity: 0.9;
+  }

@@ -21,26 +21,6 @@
   const nav_loginBtn = document.getElementById("login");
 
 
-// Login Button
-// function logout(){
-//   // const logoutBtn = document.createElement("button");
-//   //   logoutBtn.innerText = "Logout";
-//   //   logoutBtn.classList.add("logoutBtn");
-//   //   logoutBtn.onclick = function() {
-//   //     alert("Logging Out!");
-//   //     // Logout code 	  
-        
-//              signOut(auth).then(() => {
-//                  console.log('Log-out successful.');
-//              //    logoutBtn.parentNode.replaceChild(nav_loginBtn, logoutBtn); 
-//                  window.location.href="index.html";
-//                }).catch((error) => {
-//                  console.log('An error happened.',error);
-//                });		  		  
-        
-//     };
-//    // nav_loginBtn.parentNode.replaceChild(logoutBtn, nav_loginBtn); 
-// //}
 
 auth.languageCode='en';
 

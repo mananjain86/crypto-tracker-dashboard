@@ -190,23 +190,6 @@ function search(event) {
 }
 document.getElementById("search").addEventListener('input', search);
 
-// // Watchlist Add Button
-
-// function changeStar(button){
-//     // alert("Adding to Watchlist");
-//     // addToWatchlist.textContent = "★";
-    
-//     const star = document.getElementById('btcToWatchlist');
-//     star.addEventListener('click', () => {
-//         star.classList.toggle('revertStar');
-//     })
-//     if (star.classList.contains('revertStar')) {
-//         alert("Add to Watchlist");
-//     } else {
-//         alert("Removing from Watchlist");
-//     }
-
-// }
 
 
 // Pagination

@@ -4,7 +4,14 @@ const cors = require('cors');
 require('dotenv').config();
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: [
+    'http://localhost:5173',
+    'https://your-frontend.vercel.app'
+  ],
+  credentials: true
+}));
+
 app.use(express.json());
 
 // MongoDB connection
@@ -15,15 +22,14 @@ app.use(express.json());
 
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect(process.env.MONGODB_URI, {
-      useNewUrlParser: true,
-    });
-    console.log(`MongoDB Connected`);
+    await mongoose.connect(process.env.MONGODB_URI);
+    console.log('MongoDB Connected');
   } catch (error) {
     console.error(error.message);
     process.exit(1);
   }
-}
+};
+
 
 connectDB();
 

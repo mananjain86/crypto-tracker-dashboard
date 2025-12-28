@@ -3,29 +3,32 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const auth = require('../middleware/auth');
+
 const router = express.Router();
 
-// @route   POST /api/auth/register
-// @desc    Register a new user
-// @access  Public
+/**
+ * @route   POST /api/auth/register
+ * @desc    Register a new user
+ * @access  Public
+ */
 router.post('/register', async (req, res) => {
   try {
     const { email, password } = req.body;
 
     // Validate input
     if (!email || !password) {
-      return res.status(400).json({ 
-        success: false, 
-        message: 'Please provide email and password' 
+      return res.status(400).json({
+        success: false,
+        message: 'Please provide email and password'
       });
     }
 
-    // Check if user already exists
-    let user = await User.findOne({ email });
-    if (user) {
-      return res.status(400).json({ 
-        success: false, 
-        message: 'User already exists' 
+    // Check if user exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({
+        success: false,
+        message: 'User already exists'
       });
     }
 
@@ -33,22 +36,21 @@ router.post('/register', async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Create new user
-    const newUser = new User({ 
-      email, 
-      password: hashedPassword, 
-      watchlist: [] 
+    // Create user
+    const user = new User({
+      email,
+      password: hashedPassword,
+      watchlist: []
     });
-    
-    await newUser.save();
-    
-    // Console log when user is created
-    console.log(`👤 New user created: ${email} (ID: ${newUser._id})`);
 
-    // Create JWT token
+    await user.save();
+
+    console.log(`👤 New user registered: ${email} (${user._id})`);
+
+    // Generate JWT
     const token = jwt.sign(
-      { id: newUser._id }, 
-      process.env.JWT_SECRET, 
+      { id: user._id },
+      process.env.JWT_SECRET,
       { expiresIn: '7d' }
     );
 
@@ -56,9 +58,9 @@ router.post('/register', async (req, res) => {
       success: true,
       token,
       user: {
-        id: newUser._id,
-        email: newUser.email,
-        watchlist: newUser.watchlist
+        id: user._id,
+        email: user.email,
+        watchlist: user.watchlist
       }
     });
 
@@ -71,48 +73,49 @@ router.post('/register', async (req, res) => {
   }
 });
 
-// @route   POST /api/auth/login
-// @desc    Authenticate user & get token
-// @access  Public
+/**
+ * @route   POST /api/auth/login
+ * @desc    Login user
+ * @access  Public
+ */
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
 
     // Validate input
     if (!email || !password) {
-      return res.status(400).json({ 
-        success: false, 
-        message: 'Please provide email and password' 
+      return res.status(400).json({
+        success: false,
+        message: 'Please provide email and password'
       });
     }
 
-    // Check if user exists
+    // Find user
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(400).json({ 
-        success: false, 
-        message: 'Invalid credentials' 
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid credentials'
       });
     }
 
-    // Validate password
+    // Compare passwords
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(400).json({ 
-        success: false, 
-        message: 'Invalid credentials' 
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid credentials'
       });
     }
 
-    // Create JWT token
+    console.log(`🔐 User logged in: ${email} (${user._id})`);
+
+    // Generate JWT
     const token = jwt.sign(
-      { id: user._id }, 
-      process.env.JWT_SECRET, 
+      { id: user._id },
+      process.env.JWT_SECRET,
       { expiresIn: '7d' }
     );
-
-    // Console log when user logs in
-    console.log(`🔐 User logged in: ${email} (ID: ${user._id})`);
 
     res.json({
       success: true,
@@ -126,55 +129,53 @@ router.post('/login', async (req, res) => {
 
   } catch (err) {
     console.error('Login error:', err);
-    res.status(500).json({ 
-      success: false, 
-      message: 'Server error during login' 
+    res.status(500).json({
+      success: false,
+      message: 'Server error during login'
     });
   }
 });
 
-// @route   GET /api/auth/me
-// @desc    Get current user
-// @access  Private
+/**
+ * @route   GET /api/auth/me
+ * @desc    Get current logged-in user
+ * @access  Private
+ */
 router.get('/me', auth, async (req, res) => {
   try {
     const user = await User.findById(req.user).select('-password');
+
     if (!user) {
-      return res.status(404).json({ 
-        success: false, 
-        message: 'User not found' 
+      return res.status(404).json({
+        success: false,
+        message: 'User not found'
       });
     }
-    
+
     res.json({
       success: true,
       user
     });
+
   } catch (err) {
     console.error('Get user error:', err);
-    res.status(500).json({ 
-      success: false, 
-      message: 'Server error' 
+    res.status(500).json({
+      success: false,
+      message: 'Server error'
     });
   }
 });
 
-// @route   POST /api/auth/logout
-// @desc    Logout user (client-side token removal)
-// @access  Private
-router.post('/logout', auth, async (req, res) => {
-  try {
-    res.json({
-      success: true,
-      message: 'Logged out successfully'
-    });
-  } catch (err) {
-    console.error('Logout error:', err);
-    res.status(500).json({ 
-      success: false, 
-      message: 'Server error during logout' 
-    });
-  }
+/**
+ * @route   POST /api/auth/logout
+ * @desc    Logout user (client removes token)
+ * @access  Private
+ */
+router.post('/logout', auth, (req, res) => {
+  res.json({
+    success: true,
+    message: 'Logged out successfully'
+  });
 });
 
-module.exports = router; 
+module.exports = router;

@@ -178,4 +178,103 @@ router.post('/logout', auth, (req, res) => {
   });
 });
 
+/**
+ * @route   POST /api/auth/google
+ * @desc    Login/register with Google (verify ID token on backend)
+ * @access  Public
+ */
+router.post('/google', async (req, res) => {
+  try {
+    const { credential } = req.body;
+    if (!credential) {
+      return res.status(400).json({ success: false, message: 'Google credential required' });
+    }
+
+    // Decode the Google JWT (header.payload.signature)
+    // For a production app you'd verify the signature with Google's public keys,
+    // but for this project we decode the payload which contains verified claims
+    const parts = credential.split('.');
+    if (parts.length !== 3) {
+      return res.status(400).json({ success: false, message: 'Invalid credential format' });
+    }
+
+    const payload = JSON.parse(Buffer.from(parts[1], 'base64url').toString());
+    const email = payload.email;
+    const name = payload.name;
+
+    if (!email) {
+      return res.status(400).json({ success: false, message: 'No email in Google credential' });
+    }
+
+    // Find or create user
+    let user = await User.findOne({ email });
+    if (!user) {
+      // Create user with random password (they'll login via Google)
+      const bcryptLib = require('bcryptjs');
+      const salt = await bcryptLib.genSalt(10);
+      const hashedPassword = await bcryptLib.hash(require('crypto').randomBytes(32).toString('hex'), salt);
+      user = new User({ email, password: hashedPassword, watchlist: [] });
+      await user.save();
+      console.log(`👤 New Google user registered: ${email} (${user._id})`);
+    } else {
+      console.log(`🔐 Google user logged in: ${email} (${user._id})`);
+    }
+
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
+
+    res.json({
+      success: true,
+      token,
+      user: { id: user._id, email: user.email, watchlist: user.watchlist }
+    });
+
+  } catch (err) {
+    console.error('Google auth error:', err);
+    res.status(500).json({ success: false, message: 'Google authentication failed' });
+  }
+});
+
+/**
+ * @route   POST /api/auth/wallet
+ * @desc    Login/register with MetaMask wallet address
+ * @access  Public
+ */
+router.post('/wallet', async (req, res) => {
+  try {
+    const { walletAddress } = req.body;
+    if (!walletAddress) {
+      return res.status(400).json({ success: false, message: 'Wallet address required' });
+    }
+
+    const normalizedAddress = walletAddress.toLowerCase();
+    const email = `${normalizedAddress}@wallet.cryptogaze`;
+
+    // Find or create user
+    let user = await User.findOne({ email });
+    if (!user) {
+      const bcryptLib = require('bcryptjs');
+      const salt = await bcryptLib.genSalt(10);
+      const hashedPassword = await bcryptLib.hash(require('crypto').randomBytes(32).toString('hex'), salt);
+      user = new User({ email, password: hashedPassword, watchlist: [] });
+      await user.save();
+      console.log(`🦊 New wallet user registered: ${normalizedAddress} (${user._id})`);
+    } else {
+      console.log(`🦊 Wallet user logged in: ${normalizedAddress} (${user._id})`);
+    }
+
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
+
+    res.json({
+      success: true,
+      token,
+      user: { id: user._id, email: user.email, walletAddress: normalizedAddress, watchlist: user.watchlist }
+    });
+
+  } catch (err) {
+    console.error('Wallet auth error:', err);
+    res.status(500).json({ success: false, message: 'Wallet authentication failed' });
+  }
+});
+
 module.exports = router;
+

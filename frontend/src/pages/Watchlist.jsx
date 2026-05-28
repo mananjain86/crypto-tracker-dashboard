@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { watchlistAPI } from '../api/auth';
+import { cryptoAPI } from '../api/crypto';
 import { useAuth } from '../context/AuthContext';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -32,11 +33,10 @@ function Watchlist() {
           return;
         }
         
-        // Fetch coin data for each id
+        // Fetch coin data for each id via backend proxy
         const coinData = await Promise.all(
           watchlistIds.map(async (coinid) => {
-            const res = await fetch(`https://api.coingecko.com/api/v3/coins/${coinid}`);
-            return res.json();
+            return cryptoAPI.getCoinDetails(coinid);
           })
         );
         setCoins(coinData);
@@ -108,4 +108,4 @@ function Watchlist() {
   );
 }
 
-export default Watchlist; 
+export default Watchlist;

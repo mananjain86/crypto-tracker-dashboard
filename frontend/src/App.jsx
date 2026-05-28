@@ -10,6 +10,7 @@ import Trending from './pages/Trending';
 import News from './pages/News';
 import Vote from './pages/Vote';
 import Landing from './pages/Landing';
+import AIChatWidget from './components/AIChatWidget';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <Route path="/news" element={<News />} />
           <Route path="/vote" element={<Vote />} />
         </Routes>
+        <AIChatWidget />
       </Router>
     </AuthProvider>
   );

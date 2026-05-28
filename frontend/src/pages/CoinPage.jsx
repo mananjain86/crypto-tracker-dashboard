@@ -1,6 +1,8 @@
 import { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { watchlistAPI } from '../api/auth';
+import { cryptoAPI, binanceAPI } from '../api/crypto';
+import { aiAPI } from '../api/ai';
 import { useAuth } from '../context/AuthContext';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -23,14 +25,15 @@ function CoinPage() {
   const [chartData, setChartData] = useState({ labels: [], prices: [] });
   const [selectedTimeframe, setSelectedTimeframe] = useState(1);
   const [inWatchlist, setInWatchlist] = useState(false);
+  const [aiAnalysis, setAiAnalysis] = useState('');
+  const [aiLoading, setAiLoading] = useState(false);
   const chartRef = useRef();
   const chartInstance = useRef();
 
-  // Fetch coin details (CoinGecko)
+  // Fetch coin details via backend proxy
   useEffect(() => {
     setLoading(true);
-    fetch(`https://api.coingecko.com/api/v3/coins/${id}`)
-      .then(res => res.json())
+    cryptoAPI.getCoinDetails(id)
       .then(data => {
         setCoin(data);
         setLoading(false);
@@ -41,19 +44,14 @@ function CoinPage() {
       });
   }, [id]);
 
-  // Fetch Binance ticker for this coin (every 5s)
+  // Fetch Binance ticker for this coin only (single symbol, not bulk)
   useEffect(() => {
     if (!coin) return;
     let interval;
     const fetchBinance = () => {
-      fetch('https://api.binance.com/api/v3/ticker/24hr')
-        .then(res => res.json())
-        .then(data => {
-          // Try to find the USDT pair for this coin's symbol
-          const symbol = coin.symbol.toUpperCase();
-          const ticker = data.find(t => t.symbol === symbol + 'USDT');
-          setBinanceTicker(ticker || null);
-        })
+      const symbol = coin.symbol.toUpperCase();
+      binanceAPI.getTicker(symbol)
+        .then(data => setBinanceTicker(data))
         .catch(() => setBinanceTicker(null));
     };
     fetchBinance();
@@ -61,11 +59,10 @@ function CoinPage() {
     return () => clearInterval(interval);
   }, [coin]);
 
-  // Fetch chart data
+  // Fetch chart data via backend proxy
   useEffect(() => {
     if (!id) return;
-    fetch(`https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=usd&days=${selectedTimeframe}`)
-      .then(res => res.json())
+    cryptoAPI.getMarketChart(id, selectedTimeframe)
       .then(data => {
         setChartData({
           labels: data.prices.map(price => new Date(price[0]).toLocaleDateString()),
@@ -144,6 +141,29 @@ function CoinPage() {
     }
   };
 
+  // AI Analysis handler
+  const handleAIAnalysis = async () => {
+    if (!coin) return;
+    setAiLoading(true);
+    try {
+      const coinData = {
+        price: coin.market_data.current_price.usd,
+        change24h: coin.market_data.price_change_percentage_24h,
+        marketCap: coin.market_data.market_cap.usd,
+        volume: coin.market_data.total_volume.usd,
+        rank: coin.market_cap_rank,
+        ath: coin.market_data.ath.usd,
+        atl: coin.market_data.atl.usd
+      };
+      const result = await aiAPI.analyzeCoin(id, coinData);
+      setAiAnalysis(result.analysis);
+    } catch (err) {
+      setAiAnalysis('Unable to generate analysis. Please try again later.');
+    } finally {
+      setAiLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900">
       <Header />
@@ -159,18 +179,31 @@ function CoinPage() {
                 <img src={coin.image.large} alt={coin.name} width={48} className="drop-shadow-lg" />
                 {coin.name} <span className="text-lg font-semibold text-blue-400">({coin.symbol.toUpperCase()})</span>
               </h3>
-              <button
-                onClick={() => { handleWatchlistToggle(); }}
-                className="text-2xl rounded-full p-2 bg-white/70 dark:bg-gray-800/70 shadow hover:bg-blue-100 dark:hover:bg-blue-900 transition-all border border-blue-200 dark:border-blue-800"
-                aria-label={inWatchlist ? 'Remove from Watchlist' : 'Add to Watchlist'}
-                title={user ? (inWatchlist ? 'Remove from Watchlist' : 'Add to Watchlist') : 'Login to use Watchlist'}
-              >
-                {inWatchlist ? (
-                  <i className="fa-solid fa-star text-yellow-400"></i>
-                ) : (
-                  <i className="fa-regular fa-star"></i>
-                )}
-              </button>
+              <div className="flex gap-3">
+                <button
+                  onClick={handleAIAnalysis}
+                  disabled={aiLoading}
+                  className="text-sm px-4 py-2 rounded-full bg-gradient-to-r from-purple-600 to-blue-500 text-white font-semibold shadow hover:scale-105 transition-all duration-200 disabled:opacity-50"
+                >
+                  {aiLoading ? (
+                    <><i className="fa-solid fa-spinner fa-spin mr-1"></i> Analyzing...</>
+                  ) : (
+                    <><i className="fa-solid fa-robot mr-1"></i> AI Analysis</>
+                  )}
+                </button>
+                <button
+                  onClick={() => { handleWatchlistToggle(); }}
+                  className="text-2xl rounded-full p-2 bg-white/70 dark:bg-gray-800/70 shadow hover:bg-blue-100 dark:hover:bg-blue-900 transition-all border border-blue-200 dark:border-blue-800"
+                  aria-label={inWatchlist ? 'Remove from Watchlist' : 'Add to Watchlist'}
+                  title={user ? (inWatchlist ? 'Remove from Watchlist' : 'Add to Watchlist') : 'Login to use Watchlist'}
+                >
+                  {inWatchlist ? (
+                    <i className="fa-solid fa-star text-yellow-400"></i>
+                  ) : (
+                    <i className="fa-regular fa-star"></i>
+                  )}
+                </button>
+              </div>
             </div>
             <h1 className="text-4xl font-extrabold mb-2 bg-gradient-to-r from-blue-600 via-blue-400 to-blue-700 bg-clip-text text-transparent">
               ${binanceTicker ? parseFloat(binanceTicker.lastPrice).toLocaleString() : coin.market_data.current_price.usd.toLocaleString()}
@@ -179,6 +212,19 @@ function CoinPage() {
               {(binanceTicker ? parseFloat(binanceTicker.priceChangePercent) : coin.market_data.price_change_percentage_24h) >= 0 ? <i className="fa-solid fa-caret-up"></i> : <i className="fa-solid fa-caret-down"></i>}
               {Math.abs(binanceTicker ? parseFloat(binanceTicker.priceChangePercent) : coin.market_data.price_change_percentage_24h).toFixed(2)}%
             </span>
+
+            {/* AI Analysis Panel */}
+            {aiAnalysis && (
+              <div className="mt-4 p-5 rounded-2xl bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-900/30 dark:to-blue-900/30 border border-purple-200 dark:border-purple-700 shadow-md">
+                <div className="flex items-center gap-2 mb-3">
+                  <i className="fa-solid fa-robot text-purple-600"></i>
+                  <span className="font-bold text-purple-700 dark:text-purple-300">AI Analysis</span>
+                  <span className="text-xs text-gray-500 ml-auto">Powered by Gemini</span>
+                </div>
+                <div className="text-sm text-gray-700 dark:text-gray-200 whitespace-pre-wrap leading-relaxed">{aiAnalysis}</div>
+              </div>
+            )}
+
             <small><p className="py-4 text-gray-500 dark:text-gray-300">{coin.description.en}</p></small>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8 mt-6">
               <div className='md:col-span-1'>
@@ -236,4 +282,4 @@ function CoinPage() {
   );
 }
 
-export default CoinPage; 
+export default CoinPage;

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { cryptoAPI, binanceAPI } from '../api/crypto';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Modal from '../components/Modal';
@@ -14,12 +15,11 @@ function Home() {
   const [authMode, setAuthMode] = useState('login'); // NEW: track login/signup
   const [hasNextPage, setHasNextPage] = useState(true);
 
-  // Fetch CoinGecko data for the current page
+  // Fetch CoinGecko data via backend proxy
   useEffect(() => {
     if (searchTerm) return; // Don't fetch paginated data if searching
     setIsLoading(true);
-    fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=32&page=${currentPage}&sparkline=true`)
-      .then(res => res.json())
+    cryptoAPI.getMarkets(currentPage, 32, true)
       .then(data => {
         setCryptoData(data);
         setIsLoading(false);
@@ -32,42 +32,28 @@ function Home() {
       });
   }, [currentPage, searchTerm]);
 
-  // Fetch Binance data every 5 seconds
+  // Fetch Binance data for visible coins only (not all 1000+)
   useEffect(() => {
+    if (!cryptoData || cryptoData.length === 0) return;
     let interval;
     const fetchBinance = () => {
-      fetch('https://api.binance.com/api/v3/ticker/24hr')
-        .then(res => res.json())
-        .then(data => {
-          // Only keep USDT pairs for mapping
-          const usdtPairs = data.filter(ticker => ticker.symbol.endsWith('USDT'));
-          // Map: symbol (BTC) => ticker data
-          const map = {};
-          usdtPairs.forEach(ticker => {
-            // Remove USDT suffix, e.g., BTCUSDT -> BTC
-            const symbol = ticker.symbol.replace('USDT', '');
-            map[symbol.toUpperCase()] = ticker;
-          });
-          setBinanceData(map);
-        })
+      // Only fetch tickers for coins currently visible on the page
+      const symbols = cryptoData.map(c => c.symbol.toUpperCase());
+      binanceAPI.getTickers(symbols)
+        .then(data => setBinanceData(data))
         .catch(() => setBinanceData({}));
     };
     fetchBinance();
     interval = setInterval(fetchBinance, 5000);
     return () => clearInterval(interval);
-  }, []);
+  }, [cryptoData]);
 
-  // Search handler (CoinGecko)
+  // Search handler via backend proxy
   useEffect(() => {
     if (!searchTerm) return;
     setIsLoading(true);
-    fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250`)
-      .then(res => res.json())
-      .then(data => {
-        const filtered = data.filter(crypto =>
-          crypto.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          crypto.symbol.toLowerCase().includes(searchTerm.toLowerCase())
-        );
+    cryptoAPI.searchMarkets(searchTerm)
+      .then(filtered => {
         setCryptoData(filtered);
         setIsLoading(false);
         setHasNextPage(false);
@@ -242,4 +228,4 @@ function Home() {
   );
 }
 
-export default Home; 
+export default Home;

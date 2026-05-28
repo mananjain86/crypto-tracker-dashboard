@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:3000/api';
+const API_BASE_URL = 'http://localhost:5000/api';
 
 // Helper function to make API requests
 const apiRequest = async (endpoint, options = {}) => {
@@ -41,6 +41,22 @@ export const authAPI = {
     return apiRequest('/auth/login', {
       method: 'POST',
       body: JSON.stringify({ email, password }),
+    });
+  },
+
+  // Login with Google
+  googleLogin: async (credential) => {
+    return apiRequest('/auth/google', {
+      method: 'POST',
+      body: JSON.stringify({ credential }),
+    });
+  },
+
+  // Login with Wallet
+  walletLogin: async (walletAddress) => {
+    return apiRequest('/auth/wallet', {
+      method: 'POST',
+      body: JSON.stringify({ walletAddress }),
     });
   },
 

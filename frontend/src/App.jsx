@@ -10,7 +10,7 @@ import Trending from './pages/Trending';
 import News from './pages/News';
 import Vote from './pages/Vote';
 import Landing from './pages/Landing';
-import AIChatWidget from './components/AIChatWidget';
+import { Toaster } from 'react-hot-toast';
 
 function App() {
   return (
@@ -28,7 +28,17 @@ function App() {
           <Route path="/news" element={<News />} />
           <Route path="/vote" element={<Vote />} />
         </Routes>
-        <AIChatWidget />
+        <Toaster 
+          position="bottom-right" 
+          toastOptions={{
+            duration: 4000,
+            style: {
+              background: '#1e293b',
+              color: '#fff',
+              borderRadius: '10px',
+            },
+          }} 
+        />
       </Router>
     </AuthProvider>
   );

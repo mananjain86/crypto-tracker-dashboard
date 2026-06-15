@@ -8,7 +8,8 @@ app.use(cors({
   origin: [
     'http://localhost:5173',
     'http://localhost:5174',
-    'https://crypto-tracker-dashboard-tau-ten.vercel.app'
+    'https://crypto-tracker-dashboard-tau-ten.vercel.app',
+    'https://crypto-gaze-tracker.vercel.app'
   ],
   credentials: true
 }));

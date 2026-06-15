@@ -1,6 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
 import { cryptoAPI } from '../api/crypto';
-import { aiAPI } from '../api/ai';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Chart from 'chart.js/auto';
@@ -8,8 +7,6 @@ import Chart from 'chart.js/auto';
 function Overview() {
   const [globalData, setGlobalData] = useState(null);
   const [topCoins, setTopCoins] = useState([]);
-  const [marketSummary, setMarketSummary] = useState('');
-  const [summaryLoading, setSummaryLoading] = useState(true);
   const [loading, setLoading] = useState(true);
   const chartRef = useRef();
   const chartInstance = useRef();
@@ -27,19 +24,6 @@ function Overview() {
     }).catch(() => setLoading(false));
   }, []);
 
-  // Fetch AI market summary
-  useEffect(() => {
-    setSummaryLoading(true);
-    aiAPI.getMarketSummary()
-      .then(res => {
-        setMarketSummary(res.summary);
-        setSummaryLoading(false);
-      })
-      .catch(() => {
-        setMarketSummary('Market summary unavailable at the moment.');
-        setSummaryLoading(false);
-      });
-  }, []);
 
   // Render dominance chart
   useEffect(() => {
@@ -144,31 +128,15 @@ function Overview() {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            <div className="flex justify-center mb-8">
               {/* Dominance Chart */}
-              <div className="glass-bg rounded-2xl p-6 shadow-lg border border-blue-200 dark:border-blue-800">
+              <div className="glass-bg rounded-2xl p-6 shadow-lg border border-blue-200 dark:border-blue-800 w-full max-w-2xl">
                 <h2 className="text-xl font-bold mb-4 text-blue-700 dark:text-blue-300">
                   <i className="fa-solid fa-chart-pie mr-2"></i>Market Dominance
                 </h2>
                 <div style={{ height: '320px' }}>
                   <canvas ref={chartRef}></canvas>
                 </div>
-              </div>
-
-              {/* AI Market Summary */}
-              <div className="glass-bg rounded-2xl p-6 shadow-lg border border-purple-200 dark:border-purple-800 bg-gradient-to-br from-purple-50/50 to-blue-50/50 dark:from-purple-900/20 dark:to-blue-900/20">
-                <h2 className="text-xl font-bold mb-4 text-purple-700 dark:text-purple-300 flex items-center gap-2">
-                  <i className="fa-solid fa-robot"></i>AI Market Summary
-                  <span className="text-xs font-normal text-gray-500 ml-auto">Powered by Gemini</span>
-                </h2>
-                {summaryLoading ? (
-                  <div className="flex items-center gap-3 py-8">
-                    <i className="fa-solid fa-spinner fa-spin text-purple-500"></i>
-                    <span className="text-gray-500">Generating market summary...</span>
-                  </div>
-                ) : (
-                  <div className="text-sm text-gray-700 dark:text-gray-200 whitespace-pre-wrap leading-relaxed">{marketSummary}</div>
-                )}
               </div>
             </div>
 

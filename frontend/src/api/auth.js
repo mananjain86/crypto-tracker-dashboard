@@ -4,11 +4,11 @@ const API_BASE_URL = 'http://localhost:5000/api';
 const apiRequest = async (endpoint, options = {}) => {
   const url = `${API_BASE_URL}${endpoint}`;
   const config = {
+    ...options,
     headers: {
       'Content-Type': 'application/json',
-      ...options.headers,
+      ...(options.headers || {}),
     },
-    ...options,
   };
 
   try {

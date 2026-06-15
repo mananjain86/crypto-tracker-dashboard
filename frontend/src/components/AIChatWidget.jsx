@@ -81,7 +81,7 @@ function AIChatWidget() {
               <div className="font-bold text-sm">CryptoGaze AI</div>
               <div className="text-xs opacity-80 flex items-center gap-1">
                 <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></div>
-                Powered by Gemini
+                Online
               </div>
             </div>
             <button onClick={() => setIsOpen(false)} className="hover:bg-white/20 rounded-lg p-1 transition-all">

@@ -19,6 +19,10 @@ const VoteSchema = new Schema({
     type: String,
     default: null
   },
+  network: {
+    type: String,
+    default: null
+  },
   createdAt: {
     type: Date,
     default: Date.now

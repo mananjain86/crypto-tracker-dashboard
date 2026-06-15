@@ -11,7 +11,7 @@ const router = express.Router();
  */
 router.post('/', auth, async (req, res) => {
   try {
-    const { coinId, sentiment, walletAddress } = req.body;
+    const { coinId, sentiment, walletAddress, networkChainId } = req.body;
 
     if (!coinId || !sentiment) {
       return res.status(400).json({ success: false, message: 'coinId and sentiment are required' });
@@ -21,14 +21,36 @@ router.post('/', auth, async (req, res) => {
       return res.status(400).json({ success: false, message: 'sentiment must be bullish or bearish' });
     }
 
-    // Upsert: update if exists, create if not
-    const vote = await Vote.findOneAndUpdate(
-      { coinId, userId: req.user },
-      { coinId, userId: req.user, sentiment, walletAddress: walletAddress || null, createdAt: new Date() },
-      { upsert: true, new: true }
-    );
+    // Validate wallet address format if provided
+    let validatedWallet = null;
+    let networkName = null;
+    if (walletAddress) {
+      const { isValidEthereumAddress, getTestnetName } = require('../utils/walletVerify');
+      if (!isValidEthereumAddress(walletAddress)) {
+        return res.status(400).json({ success: false, message: 'Invalid wallet address format' });
+      }
+      validatedWallet = walletAddress.toLowerCase();
+      if (networkChainId) {
+        networkName = getTestnetName(networkChainId) || 'unknown';
+      }
+    }
 
-    console.log(`🗳️ Vote cast: ${sentiment} on ${coinId} by user ${req.user}`);
+    // Prevent duplicate voting
+    const existingVote = await Vote.findOne({ coinId, userId: req.user });
+    if (existingVote) {
+      return res.status(400).json({ success: false, message: 'You have already voted for this coin' });
+    }
+
+    const vote = await Vote.create({
+      coinId,
+      userId: req.user,
+      sentiment,
+      walletAddress: validatedWallet,
+      network: networkName,
+      createdAt: new Date()
+    });
+
+    console.log(`🗳️ Vote cast: ${sentiment} on ${coinId} by user ${req.user}${networkName ? ` (${networkName})` : ''}`);
 
     res.json({ success: true, vote });
   } catch (error) {

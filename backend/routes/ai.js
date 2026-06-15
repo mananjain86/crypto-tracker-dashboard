@@ -66,8 +66,8 @@ Respond concisely and helpfully. Use markdown formatting for readability. Keep r
   } catch (error) {
     console.error('AI chat error:', error.message);
     const fallback = error.message === 'RATE_LIMITED'
-      ? "I'm currently rate-limited. The free Gemini API tier has usage limits — please try again in about 30 seconds! 🤖"
-      : "I'm having trouble connecting to my AI brain right now. Please try again in a moment! 🤖";
+      ? "I'm currently rate-limited. Please try again in about 30 seconds! 🤖"
+      : "I'm having trouble connecting right now. Please try again in a moment! 🤖";
     res.json({ success: true, reply: fallback });
   }
 });
@@ -183,7 +183,7 @@ Use markdown formatting. Be professional but conversational. Do NOT provide fina
   } catch (error) {
     console.error('AI market summary error:', error.message);
     const fallback = error.message === 'RATE_LIMITED'
-      ? "📊 Market summary is temporarily rate-limited. The free Gemini API tier has usage limits — please try again in about 30 seconds!"
+      ? "📊 Market summary is temporarily rate-limited. Please try again in about 30 seconds!"
       : "Market summary is temporarily unavailable. Check back shortly! 📊";
     res.json({ success: true, summary: fallback, cached: false });
   }

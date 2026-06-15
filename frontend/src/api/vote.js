@@ -2,14 +2,14 @@ const API_BASE_URL = 'http://localhost:5000/api';
 
 export const voteAPI = {
   // Cast a vote
-  castVote: async (token, coinId, sentiment, walletAddress = null) => {
+  castVote: async (token, coinId, sentiment, walletAddress = null, networkChainId = null) => {
     const res = await fetch(`${API_BASE_URL}/vote`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       },
-      body: JSON.stringify({ coinId, sentiment, walletAddress })
+      body: JSON.stringify({ coinId, sentiment, walletAddress, networkChainId })
     });
     if (!res.ok) throw new Error('Vote failed');
     return res.json();

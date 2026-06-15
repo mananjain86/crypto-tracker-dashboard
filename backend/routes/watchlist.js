@@ -43,24 +43,15 @@ router.post('/add', auth, async (req, res) => {
       });
     }
 
-    const user = await User.findById(req.user);
+    const user = await User.findByIdAndUpdate(
+      req.user,
+      { $addToSet: { watchlist: coinId } },
+      { new: true }
+    );
+
     if (!user) {
-      return res.status(404).json({ 
-        success: false, 
-        message: 'User not found' 
-      });
+      return res.status(404).json({ success: false, message: 'User not found' });
     }
-
-    // Check if coin is already in watchlist
-    if (user.watchlist.includes(coinId)) {
-      return res.status(400).json({ 
-        success: false, 
-        message: 'Coin already in watchlist' 
-      });
-    }
-
-    user.watchlist.push(coinId);
-    await user.save();
     
     // Console log when coin is added to watchlist
     console.log(`➕ Coin added to watchlist: ${coinId} by user ${user.email} (ID: ${user._id})`);
@@ -74,7 +65,7 @@ router.post('/add', auth, async (req, res) => {
     console.error('Add to watchlist error:', err);
     res.status(500).json({ 
       success: false, 
-      message: 'Server error' 
+      message: 'Server error: ' + err.message
     });
   }
 });
@@ -93,24 +84,15 @@ router.post('/remove', auth, async (req, res) => {
       });
     }
 
-    const user = await User.findById(req.user);
+    const user = await User.findByIdAndUpdate(
+      req.user,
+      { $pull: { watchlist: coinId } },
+      { new: true }
+    );
+
     if (!user) {
-      return res.status(404).json({ 
-        success: false, 
-        message: 'User not found' 
-      });
+      return res.status(404).json({ success: false, message: 'User not found' });
     }
-
-    // Check if coin is in watchlist
-    if (!user.watchlist.includes(coinId)) {
-      return res.status(400).json({ 
-        success: false, 
-        message: 'Coin not in watchlist' 
-      });
-    }
-
-    user.watchlist = user.watchlist.filter(id => id !== coinId);
-    await user.save();
     
     // Console log when coin is removed from watchlist
     console.log(`➖ Coin removed from watchlist: ${coinId} by user ${user.email} (ID: ${user._id})`);
@@ -124,7 +106,7 @@ router.post('/remove', auth, async (req, res) => {
     console.error('Remove from watchlist error:', err);
     res.status(500).json({ 
       success: false, 
-      message: 'Server error' 
+      message: 'Server error: ' + err.message
     });
   }
 });

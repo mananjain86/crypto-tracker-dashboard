@@ -1,132 +1,115 @@
-# CryptoTracker
+# CryptoGaze Tracker 🚀
 
-A full‑stack crypto dashboard with authentication and personal watchlist. The frontend (React + Vite + Tailwind) consumes a Node/Express API backed by MongoDB with JWT auth.
+A premium, full-stack cryptocurrency dashboard delivering sub-second real-time market data, interactive historical charts, and decentralized Web3 community sentiment voting.
 
-## Features
-- Authentication: signup, login, persistent session via JWT
-- Personal watchlist: add/remove/clear tracked coins
-- Market data: CoinGecko markets (top 250) with caching on client
-- Responsive UI: Tailwind, framer‑motion animations, optional 3D/three.js visuals
+## 🌟 Key Features
+- **Real-Time Market Data:** Live price updates powered by **Binance WebSockets**.
+- **Interactive Charts:** Comprehensive historical market data provided by the **CoinGecko REST API**, fetched directly from the client to bypass strict server rate limits.
+- **Web3 Sentiment Voting:** A fully decentralized voting system leveraging a custom **Solidity Smart Contract** deployed on the Ethereum testnet. Connect via **MetaMask** using `ethers.js` to cast verifiable on-chain votes (with a 0-ETH fallback mechanism).
+- **Authentication & Security:** Robust custom backend with **MongoDB** and **JWT** session management, integrated seamlessly with **Google OAuth** for 1-click user onboarding.
+- **Premium UI/UX:** Responsive, glassmorphic design utilizing **TailwindCSS** and **Chart.js**.
 
-## Tech Stack
-- Backend: Express 5, Mongoose (MongoDB), JWT, bcryptjs, CORS, dotenv
-- Frontend: React 19, Vite 7, React Router 7, Tailwind CSS 4, Framer Motion, Chart.js, Three.js
-- Deployment: Frontend friendly for Vercel (rewrite config included)
+## 🛠️ Tech Stack
+- **Frontend:** React 19, Vite, TailwindCSS 4, Chart.js, ethers.js, `@react-oauth/google`
+- **Backend:** Node.js, Express, MongoDB (Mongoose), JWT, bcryptjs
+- **APIs/Services:** Binance WebSockets, CoinGecko API, Google Cloud Console (OAuth)
+- **Blockchain:** Solidity, MetaMask
+- **Deployment:** Vercel (Frontend), Render (Backend)
 
-## Monorepo Layout
+---
+
+## 📂 Repository Structure
+```text
+backend/           # Node/Express API (Auth, DB Caching, Vote Logging)
+frontend/          # React + Vite application
+contracts/         # Solidity Smart Contracts (Voting.sol)
 ```
-backend/           # Node/Express API
-frontend/          # React + Vite app
-```
-Key files:
-- API server: [backend/index.js](backend/index.js)
-- Routes: [backend/routes/auth.js](backend/routes/auth.js), [backend/routes/watchlist.js](backend/routes/watchlist.js)
-- Auth middleware: [backend/middleware/auth.js](backend/middleware/auth.js)
-- User model: [backend/models/User.js](backend/models/User.js)
-- Frontend API client: [frontend/src/api/auth.js](frontend/src/api/auth.js), [frontend/src/api/coinList.js](frontend/src/api/coinList.js)
-- Vite config: [frontend/vite.config.js](frontend/vite.config.js)
-- Vercel rewrites: [frontend/vercel.json](frontend/vercel.json)
 
-## Requirements
-- Node.js 18+ and npm
-- MongoDB connection string (Atlas or local)
+---
 
-## Environment Variables
-Create backend/.env with:
-```
-# Backend
-PORT=5000                # optional; defaults to 5000
-MONGODB_URI=your-mongodb-connection-string
-JWT_SECRET=your-long-random-secret
-```
-Notes:
-- CORS allows http://localhost:5173 by default; update origins in [backend/index.js](backend/index.js) when deploying.
-- Frontend currently points to `http://localhost:3000/api` (see [frontend/src/api/auth.js](frontend/src/api/auth.js)). Update this to match your backend port (5000 by default) or refactor to use `VITE_API_BASE_URL`.
+## ⚙️ Environment Variables Setup
 
-Optional frontend .env (if you refactor):
+### Backend (`backend/.env`)
+Create a `.env` file in the `backend` directory:
+```env
+PORT=5000
+MONGODB_URI=your-mongodb-atlas-connection-string
+JWT_SECRET=your-secure-random-string
 ```
-# Frontend (optional improvement)
+
+### Frontend (`frontend/.env`)
+Create a `.env` file in the `frontend` directory:
+```env
 VITE_API_BASE_URL=http://localhost:5000/api
+VITE_GOOGLE_CLIENT_ID=your-google-oauth-client-id.apps.googleusercontent.com
+VITE_VOTING_CONTRACT_ADDRESS=your-deployed-smart-contract-address (Optional)
 ```
+*(Note: If `VITE_VOTING_CONTRACT_ADDRESS` is left blank, the app will gracefully fallback to 0-ETH data transactions for Web3 voting).*
 
-## Install
-From the repo root, install both apps:
+---
 
+## 🚀 Local Development
+
+### 1. Install Dependencies
 ```bash
-# Backend deps
+# Install Backend deps
 cd backend
 npm install
 
-# Frontend deps (in a second terminal or after)
+# Install Frontend deps
 cd ../frontend
 npm install
 ```
 
-## Run (Development)
-Start backend and frontend in separate terminals:
+### 2. Start the Development Servers
+Open two separate terminal windows:
 
+**Terminal 1 (Backend):**
 ```bash
-# Terminal 1 — Backend (http://localhost:5000)
 cd backend
 npm run dev
+# Server runs on http://localhost:5000
+```
 
-# Terminal 2 — Frontend (http://localhost:5173)
+**Terminal 2 (Frontend):**
+```bash
 cd frontend
 npm run dev
-```
-If you keep `PORT=5000`, make sure the frontend API base matches `http://localhost:5000/api`.
-
-### One‑liner (macOS)
-```bash
-( cd backend && npm run dev ) & ( cd frontend && npm run dev )
+# App runs on http://localhost:5173
 ```
 
-## Build & Preview (Frontend)
-```bash
-cd frontend
-npm run build
-npm run preview
-```
+---
 
-## API Reference
-Base URL: `http://localhost:<PORT>/api`
+## 🌐 Deployment Instructions
 
-Auth
-- POST `/auth/register` — body: `{ email, password }`
-- POST `/auth/login` — body: `{ email, password }`
-- GET `/auth/me` — header: `Authorization: Bearer <token>`
-- POST `/auth/logout` — header: `Authorization: Bearer <token>`
+### Backend (Render)
+1. Push the repository to GitHub.
+2. Connect the repository to a new **Web Service** on [Render](https://render.com).
+3. Set the Build Command to `npm install` and the Start Command to `node index.js`.
+4. Add your `MONGODB_URI` and `JWT_SECRET` to the Render Environment Variables.
 
-Watchlist (all require `Authorization: Bearer <token>`)
-- GET `/watchlist` — returns `{ watchlist: string[] }`
-- POST `/watchlist/add` — body: `{ coinId }`
-- POST `/watchlist/remove` — body: `{ coinId }`
-- DELETE `/watchlist/clear`
+### Frontend (Vercel)
+1. Import the repository into [Vercel](https://vercel.com).
+2. Set the Framework Preset to **Vite**.
+3. In Environment Variables, set:
+   - `VITE_API_BASE_URL` to `https://your-render-url.onrender.com/api`
+   - `VITE_GOOGLE_CLIENT_ID` to your Google OAuth ID.
+   - `VITE_VOTING_CONTRACT_ADDRESS` to your deployed contract address (if applicable).
+4. Deploy!
 
-## Frontend Integration
-- Auth state is stored in `localStorage` (token + user)
-- Use the context in [frontend/src/context/AuthContext.jsx](frontend/src/context/AuthContext.jsx)
-- Market data via CoinGecko in [frontend/src/api/coinList.js](frontend/src/api/coinList.js)
+*(⚠️ Important: Ensure your Vercel URL is added to the "Authorized JavaScript origins" in your Google Cloud Console, and to the CORS whitelist inside `backend/index.js`)*.
 
-## Deployment
-- Frontend: Vercel ready (see [frontend/vercel.json](frontend/vercel.json)). Set production API base to your backend URL.
-- Backend: Deploy to Render, Railway, Fly.io, etc. Set env vars `MONGODB_URI` and `JWT_SECRET`. Update CORS origins in [backend/index.js](backend/index.js).
+---
 
-## Troubleshooting
-- 401 Unauthorized: Ensure you send `Authorization: Bearer <token>`.
-- CORS error: Add your frontend origin to the `cors` `origin` list in [backend/index.js](backend/index.js).
-- MongoDB connect error: Verify `MONGODB_URI` and network/IP allow list.
-- Port mismatch: Align frontend API base with backend `PORT`.
+## 📜 Smart Contract Deployment
+To deploy the voting contract:
+1. Go to [Remix IDE](https://remix.ethereum.org/).
+2. Paste the contents of `contracts/Voting.sol`.
+3. Compile using the Solidity compiler.
+4. Go to "Deploy & Run Transactions", set the environment to **Injected Provider - MetaMask**.
+5. Connect your wallet (on Sepolia or another testnet) and click **Deploy**.
+6. Copy the resulting contract address into your frontend environment variables.
 
-## Scripts
-Backend
-- `npm run dev` — start with nodemon
-- `npm start` — start with node
-
-Frontend
-- `npm run dev` — Vite dev server
-- `npm run build` — production build
-- `npm run preview` — preview built app
-
+---
 ## License
-ISC (see package.json)
+ISC

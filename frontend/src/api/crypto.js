@@ -1,4 +1,20 @@
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
+const CG_API_KEY = import.meta.env.VITE_COINGECKO_API_KEY;
+
+const fetchCG = async (url) => {
+  const options = {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json'
+    }
+  };
+  if (CG_API_KEY) {
+    options.headers['x-cg-demo-api-key'] = CG_API_KEY;
+  }
+  const res = await fetch(url, options);
+  if (!res.ok) throw new Error('CoinGecko API Error');
+  return res.json();
+};
 
 /**
  * CoinGecko proxy API — all calls routed through backend
@@ -6,20 +22,16 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000
 export const cryptoAPI = {
   // Get paginated market data
   getMarkets: async (page = 1, perPage = 32, sparkline = true) => {
-    const res = await fetch(
+    return fetchCG(
       `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=${perPage}&page=${page}&sparkline=${sparkline}`
     );
-    if (!res.ok) throw new Error('Failed to fetch markets');
-    return res.json();
   },
 
   // Search markets (for search functionality)
   searchMarkets: async (query) => {
-    const res = await fetch(
+    const data = await fetchCG(
       `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=1&sparkline=false`
     );
-    if (!res.ok) throw new Error('Failed to fetch markets');
-    const data = await res.json();
     return data.filter(coin =>
       coin.name.toLowerCase().includes(query.toLowerCase()) ||
       coin.symbol.toLowerCase().includes(query.toLowerCase())
@@ -28,39 +40,29 @@ export const cryptoAPI = {
 
   // Get single coin details
   getCoinDetails: async (coinId) => {
-    const res = await fetch(`https://api.coingecko.com/api/v3/coins/${coinId}`);
-    if (!res.ok) throw new Error('Failed to fetch coin details');
-    return res.json();
+    return fetchCG(`https://api.coingecko.com/api/v3/coins/${coinId}`);
   },
 
   // Get price chart data
   getMarketChart: async (coinId, days = 1) => {
-    const res = await fetch(
+    return fetchCG(
       `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=usd&days=${days}`
     );
-    if (!res.ok) throw new Error('Failed to fetch chart data');
-    return res.json();
   },
 
   // Get global market data
   getGlobalData: async () => {
-    const res = await fetch(`https://api.coingecko.com/api/v3/global`);
-    if (!res.ok) throw new Error('Failed to fetch global data');
-    return res.json();
+    return fetchCG(`https://api.coingecko.com/api/v3/global`);
   },
 
   // Get trending coins
   getTrending: async () => {
-    const res = await fetch(`https://api.coingecko.com/api/v3/search/trending`);
-    if (!res.ok) throw new Error('Failed to fetch trending');
-    return res.json();
+    return fetchCG(`https://api.coingecko.com/api/v3/search/trending`);
   },
 
   // Search coins
   searchCoins: async (query) => {
-    const res = await fetch(`https://api.coingecko.com/api/v3/search?query=${encodeURIComponent(query)}`);
-    if (!res.ok) throw new Error('Failed to search coins');
-    return res.json();
+    return fetchCG(`https://api.coingecko.com/api/v3/search?query=${encodeURIComponent(query)}`);
   }
 };
 
